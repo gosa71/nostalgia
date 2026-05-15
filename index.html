@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="cozy">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NostalgiaOS</title>
+<link rel="preconnect" href="//fonts.googleapis.com">
+<link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
+<link href="//fonts.googleapis.com/css2?family=VT323&family=Syne:wght@400;700&family=Syne+Mono&family=Crimson+Pro:wght@400;600;700&family=Orbitron:wght@500;700&family=Audiowide&family=Rajdhani:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+/* ===== БАЗА + ПЕРЕМЕННЫЕ (Cozy по умолчанию) ===== */
+:root {
+  --t-bg: #130c06;
+  --t-wall: linear-gradient(180deg,#3d2b1a,#2e2016 55%,#1e1610);
+  --t-text: rgba(255,230,190,.88);
+  --t-text-dim: rgba(255,200,80,.55);
+  --t-accent: #e8b84a;
+  --t-accent-glow: rgba(255,200,80,.6);
+  --t-panel-bg: rgba(30,16,8,.78);
+  --t-panel-border: rgba(255,200,80,.18);
+  --t-panel-blur: 6px;
+  --t-desk: linear-gradient(180deg,#3a2810,#1e1608);
+  --t-window: #6fb3ff;
+  --t-radius: 6px;
+  --t-font-body: 'Crimson Pro', serif;
+  --t-font-display: 'Syne', sans-serif;
+  --t-font-mono: 'VT323', monospace;
+  --t-font-ui: 'Syne Mono', 'VT323', monospace;
+}
+[data-theme="crt"] {
+  --t-bg: #000800;
+  --t-wall: radial-gradient(ellipse at 50% 50%, #001a08 0%, #000400 80%);
+  --t-text: #33ff66;
+  --t-text-dim: rgba(51,255,102,.55);
+  --t-accent: #33ff66;
+  --t-accent-glow: rgba(51,255,102,.9);
+  --t-panel-bg: rgba(0,20,8,.85);
+  --t-panel-border: rgba(51,255,102,.4);
+  --t-panel-blur: 0px;
+  --t-desk: linear-gradient(180deg,#001a08,#000a04);
+  --t-window: #33ff66;
+  --t-radius: 0px;
+  --t-font-body: 'VT323', monospace;
+  --t-font-display: 'VT323', monospace;
+  --t-font-ui: 'VT323', monospace;
+}
+[data-theme="synthwave"] {
+  --t-bg: #0a0220;
+  --t-wall: linear-gradient(180deg,#1a0533 0%,#2d0851 30%,#5a0e6e 60%,#ff006e 100%);
+  --t-text: #ffd5f5;
+  --t-text-dim: rgba(255,113,206,.7);
+  --t-accent: #ff71ce;
+  --t-accent-glow: rgba(255,113,206,.9);
+  --t-panel-bg: rgba(20,5,40,.78);
+  --t-panel-border: rgba(255,113,206,.4);
+  --t-panel-blur: 6px;
+  --t-desk: linear-gradient(180deg,#1a0533,#0d021a);
+  --t-window: #01cdfe;
+  --t-radius: 0px;
+  --t-font-body: 'Audiowide', cursive;
+  --t-font-display: 'Orbitron', sans-serif;
+  --t-font-ui: 'VT323', monospace;
+}
+[data-theme="cyberpunk"] {
+  --t-bg: #03050a;
+  --t-wall: linear-gradient(135deg,#03050a 0%,#0a0f1f 50%,#03050a 100%);
+  --t-text: #e0fbff;
+  --t-text-dim: rgba(0,240,255,.6);
+  --t-accent: #00f0ff;
+  --t-accent-glow: rgba(0,240,255,.95);
+  --t-panel-bg: rgba(3,10,20,.78);
+  --t-panel-border: rgba(0,240,255,.4);
+  --t-panel-blur: 8px;
+  --t-desk: linear-gradient(180deg,#0a0f1f,#03050a);
+  --t-window: #ff0080;
+  --t-radius: 0px;
+  --t-font-body: 'Rajdhani', sans-serif;
+  --t-font-display: 'Orbitron', sans-serif;
+  --t-font-ui: 'JetBrains Mono', monospace;
+}
+[data-theme="glass"] {
+  --t-bg: #e8eef5;
+  --t-wall: linear-gradient(135deg,#dbe7f5 0%,#e9ddf5 50%,#f5dde3 100%);
+  --t-text: rgba(30,40,60,.88);
+  --t-text-dim: rgba(60,80,120,.6);
+  --t-accent: #4a7eff;
+  --t-accent-glow: rgba(74,126,255,.5);
+  --t-panel-bg: rgba(255,255,255,.6);
+  --t-panel-border: rgba(255,255,255,.75);
+  --t-panel-blur: 18px;
+  --t-desk: linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.6));
+  --t-window: #4a7eff;
+  --t-radius: 14px;
+  --t-font-body: 'Inter', sans-serif;
+  --t-font-display: 'Inter', sans-serif;
+  --t-font-ui: 'Inter', sans-serif;
+}
+[data-theme="minimal"] {
+  --t-bg: #ffffff;
+  --t-wall: #fafafa;
+  --t-text: #111;
+  --t-text-dim: rgba(0,0,0,.55);
+  --t-accent: #dc2626;
+  --t-accent-glow: transparent;
+  --t-panel-bg: #fff;
+  --t-panel-border: #111;
+  --t-panel-blur: 0px;
+  --t-desk: #f4f4f4;
+  --t-window: #111;
+  --t-radius: 0px;
+  --t-font-body: 'Inter', sans-serif;
+  --t-font-display: 'Inter', sans-serif;
+  --t-font-ui: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; font-family: var(--t-font-body); background: var(--t-bg); color: var(--t-text); }
+button, input, textarea, select { font-family: inherit; color: inherit; }
+
+#room { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+
+.wall { position: absolute; inset: 0 0 18% 0; background: var(--t-wall); }
+.wall::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 50% at 50% -5%, var(--t-accent-glow), transparent 70%);
+  opacity: .25;
+}
+
+.desk { position: absolute; left: 0; right: 0; bottom: 0; height: 18%; background: var(--t-desk); border-top: 2px solid var(--t-panel-border); }
+
+.window { position: absolute; left: 4%; top: 12%; width: 18%; height: 32%; background: linear-gradient(180deg, var(--t-window) 0%, color-mix(in srgb, var(--t-window) 60%, #000) 100%); border: 4px solid var(--t-panel-border); border-radius: var(--t-radius); box-shadow: 0 0 30px var(--t-accent-glow); }
+.window::before, .window::after { content:''; position:absolute; background: var(--t-panel-border); }
+.window::before { left:0; right:0; top:50%; height:3px; transform: translateY(-1.5px); }
+.window::after { top:0; bottom:0; left:50%; width:3px; transform: translateX(-1.5px); }
+
+.ceiling-lamp { position: absolute; left: 50%; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; }
+.lamp-cord { width: 2px; height: 60px; background: var(--t-panel-border); }
+.lamp-shade { width: 70px; height: 28px; background: var(--t-accent); border-radius: 50% 50% 6px 6px / 80% 80% 6px 6px; box-shadow: 0 0 20px var(--t-accent-glow); }
+.lamp-bulb { position: absolute; top: 70px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #fff, var(--t-accent)); box-shadow: 0 0 30px 8px var(--t-accent-glow); }
+
+.shelf { position: absolute; right: 6%; top: 22%; width: 22%; height: 4px; background: var(--t-panel-border); }
+.shelf-books { position: absolute; right: 6%; top: calc(22% - 30px); width: 22%; height: 30px; display: flex; justify-content: flex-end; gap: 3px; align-items: flex-end; padding-right: 8px; }
+.book { width: 10px; height: 26px; background: var(--t-accent); opacity: .8; }
+.book:nth-child(2) { background: var(--t-window); height: 28px; }
+.book:nth-child(3) { background: var(--t-text-dim); height: 22px; }
+.book:nth-child(4) { background: var(--t-accent); height: 30px; opacity: .6; }
+
+.poster-frame { position: absolute; right: 8%; top: 36%; width: 14%; height: 18%; border: 6px solid var(--t-panel-border); background: linear-gradient(135deg, var(--t-accent) 0%, var(--t-window) 100%); opacity: .85; border-radius: 2px; }
+.poster-frame::after { content: 'LO-FI'; position: absolute; left: 0; right: 0; bottom: 8px; text-align: center; color: var(--t-bg); font-family: var(--t-font-display); font-weight: 700; letter-spacing: 4px; }
+
+.mug { position: absolute; right: 26%; bottom: 18%; width: 32px; height: 36px; background: var(--t-accent); border-radius: 2px 2px 6px 6px; opacity: .9; }
+.mug::after { content: ''; position: absolute; right: -10px; top: 8px; width: 12px; height: 16px; border: 3px solid var(--t-accent); border-left: none; border-radius: 0 8px 8px 0; }
+
+.radio { position: absolute; left: 6%; bottom: 18%; width: 200px; height: 90px; background: var(--t-panel-bg); border: 1px solid var(--t-panel-border); border-radius: var(--t-radius); padding: 10px; display: grid; grid-template-columns: 1fr auto; gap: 8px; backdrop-filter: blur(var(--t-panel-blur)); }
+.radio-display { font-family: var(--t-font-mono); font-size: 14px; color: var(--t-accent); border: 1px solid var(--t-panel-border); padding: 4px 6px; border-radius: 3px; display: flex; align-items: center; gap: 6px; overflow: hidden; white-space: nowrap; }
+.radio-led { width: 8px; height: 8px; border-radius: 50%; background: var(--t-text-dim); flex-shrink: 0; }
+.radio-led.on { background: var(--t-accent); box-shadow: 0 0 6px var(--t-accent-glow); }
+.radio-controls { display: flex; flex-direction: column; gap: 4px; }
+.radio-btn { background: transparent; border: 1px solid var(--t-panel-border); color: var(--t-text-dim); padding: 2px 6px; cursor: pointer; font-size: 11px; font-family: var(--t-font-ui); border-radius: 3px; }
+.radio-btn:hover { color: var(--t-accent); border-color: var(--t-accent); }
+.radio-vol { width: 100%; }
+.radio-vol-row { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--t-text-dim); font-family: var(--t-font-ui); }
+
+#sticky-notes { position: absolute; inset: 0; pointer-events: none; }
+.sticky { position: absolute; width: 160px; min-height: 80px; padding: 10px 22px 10px 28px; box-shadow: 3px 4px 12px rgba(0,0,0,.4); pointer-events: auto; cursor: grab; font-family: var(--t-font-body); font-size: 14px; color: #222; transform: rotate(-1deg); }
+.sticky:nth-child(even) { transform: rotate(1.5deg); }
+.sticky:active { cursor: grabbing; }
+.sticky-text { width: 100%; min-height: 50px; background: transparent; border: none; outline: none; resize: none; font: inherit; color: inherit; }
+.sticky-close { position: absolute; top: 2px; right: 4px; background: transparent; border: none; cursor: pointer; font-size: 16px; color: #555; line-height: 1; }
+.sticky-check { position: absolute; top: 8px; left: 8px; cursor: pointer; }
+.sticky-check input { cursor: pointer; }
+.sticky.done .sticky-text { text-decoration: line-through; opacity: .55; }
+
+.hud { position: absolute; display: flex; gap: 6px; z-index: 50; }
+.hud-tl { top: 12px; left: 12px; flex-direction: column; }
+.hud-tr { top: 12px; right: 12px; }
+.hud-br { bottom: 22%; right: 12px; }
+.hud-block, .hud-btn { background: var(--t-panel-bg); border: 1px solid var(--t-panel-border); color: var(--t-text-dim); backdrop-filter: blur(var(--t-panel-blur)); padding: 5px 10px; font-family: var(--t-font-ui); font-size: 12px; letter-spacing: .5px; border-radius: var(--t-radius); }
+.hud-btn { cursor: pointer; transition: color .15s, border-color .15s; }
+.hud-btn:hover { color: var(--t-accent); border-color: var(--t-accent); }
+
+#app { position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%); width: min(720px, 92vw); display: flex; flex-direction: column; background: var(--t-panel-bg); border: 1px solid var(--t-panel-border); border-radius: var(--t-radius); backdrop-filter: blur(var(--t-panel-blur)); overflow: hidden; z-index: 40; }
+#chat-handle { height: 8px; background: var(--t-panel-border); cursor: ns-resize; opacity: .5; transition: opacity .2s; }
+#chat-handle:hover { opacity: 1; }
+#chat { height: 280px; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+#chat::-webkit-scrollbar { width: 6px; }
+#chat::-webkit-scrollbar-thumb { background: var(--t-panel-border); border-radius: 3px; }
+.msg { font-family: var(--t-font-body); line-height: 1.5; max-width: 92%; }
+.msg-user { align-self: flex-end; color: var(--t-accent); font-family: var(--t-font-ui); font-size: 13px; padding: 6px 10px; border: 1px solid var(--t-panel-border); border-radius: var(--t-radius); background: rgba(0,0,0,.15); }
+.msg-ai { align-self: flex-start; color: var(--t-text); font-size: 15px; }
+.msg-ai.pending { opacity: .5; font-style: italic; }
+.msg-ai p { margin: 4px 0; }
+.msg-ai h1, .msg-ai h2, .msg-ai h3 { font-family: var(--t-font-display); margin: 8px 0 4px; color: var(--t-accent); }
+.msg-ai code { font-family: var(--t-font-mono); background: rgba(0,0,0,.25); padding: 1px 5px; border-radius: 3px; font-size: .9em; }
+.msg-ai pre { background: rgba(0,0,0,.3); padding: 10px; border-radius: var(--t-radius); overflow-x: auto; margin: 6px 0; }
+.msg-ai pre code { background: transparent; padding: 0; }
+.msg-ai ul, .msg-ai ol { margin: 4px 0 4px 22px; }
+.msg-ai a { color: var(--t-accent); }
+.msg-ai table { border-collapse: collapse; margin: 8px 0; width: 100%; font-size: 13px; }
+.msg-ai th, .msg-ai td { border: 1px solid var(--t-panel-border); padding: 5px 9px; text-align: left; }
+.msg-ai th { background: rgba(0,0,0,.2); color: var(--t-accent); font-family: var(--t-font-ui); font-weight: normal; letter-spacing: .5px; }
+.msg-ai tr:nth-child(even) td { background: rgba(0,0,0,.08); }
+#input-bar { display: flex; gap: 6px; padding: 8px; border-top: 1px solid var(--t-panel-border); }
+#q { flex: 1; background: transparent; border: 1px solid var(--t-panel-border); color: var(--t-text); padding: 8px 12px; border-radius: var(--t-radius); font-size: 14px; outline: none; }
+#q:focus { border-color: var(--t-accent); }
+#send { padding: 8px 18px; font-family: var(--t-font-ui); cursor: pointer; }
+.intent-badge { display: inline-block; font-size: 10px; padding: 1px 6px; border: 1px solid var(--t-panel-border); border-radius: 8px; color: var(--t-text-dim); margin-right: 6px; font-family: var(--t-font-ui); letter-spacing: .5px; }
+
+#modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); }
+#modal-overlay.hidden { display: none; }
+.modal { background: var(--t-panel-bg); border: 1px solid var(--t-panel-border); border-radius: var(--t-radius); padding: 22px; width: min(540px, 92vw); max-height: 86vh; overflow-y: auto; backdrop-filter: blur(var(--t-panel-blur)); color: var(--t-text); }
+.m-title { font-family: var(--t-font-display); font-size: 18px; color: var(--t-accent); margin-bottom: 14px; letter-spacing: 1px; }
+.m-section { margin-bottom: 16px; }
+.m-label { font-family: var(--t-font-ui); font-size: 11px; color: var(--t-text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.cards, .tgrid { display: grid; gap: 6px; }
+.cards { grid-template-columns: repeat(2, 1fr); }
+.tgrid { grid-template-columns: repeat(3, 1fr); }
+.card, .tcard { border: 1px solid var(--t-panel-border); padding: 8px 10px; border-radius: var(--t-radius); cursor: pointer; transition: border-color .15s, transform .15s; }
+.card-name { font-family: var(--t-font-ui); font-size: 12px; color: var(--t-text); }
+.card-desc { font-size: 11px; color: var(--t-text-dim); margin-top: 2px; }
+.card.sel, .tcard.sel { border-color: var(--t-accent); box-shadow: 0 0 0 1px var(--t-accent); }
+.tcard { height: 60px; position: relative; overflow: hidden; }
+.tcard-dot { position: absolute; left: 8px; bottom: 8px; width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
+.tcard-name { position: absolute; right: 8px; top: 6px; font-family: var(--t-font-ui); font-size: 10px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+.m-input, .m-textarea { width: 100%; background: rgba(0,0,0,.2); border: 1px solid var(--t-panel-border); color: var(--t-text); padding: 8px 10px; border-radius: var(--t-radius); font: inherit; font-size: 13px; outline: none; }
+.m-textarea { resize: vertical; font-family: var(--t-font-mono); font-size: 13px; }
+.m-input:focus, .m-textarea:focus { border-color: var(--t-accent); }
+.m-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+.m-btn { background: var(--t-accent); color: var(--t-bg); border: none; padding: 8px 18px; cursor: pointer; font-family: var(--t-font-ui); font-size: 12px; border-radius: var(--t-radius); letter-spacing: 1px; }
+.m-btn-secondary { background: transparent; color: var(--t-text-dim); border: 1px solid var(--t-panel-border); }
+
+#tooltip { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--t-panel-bg); border: 1px solid var(--t-accent); padding: 12px 24px; border-radius: var(--t-radius); font-family: var(--t-font-display); font-size: 18px; color: var(--t-accent); z-index: 200; pointer-events: none; transition: opacity .3s; }
+#tooltip.hidden { opacity: 0; pointer-events: none; }
+
+/* Minimal theme — убираем декор */
+[data-theme="minimal"] .wall::before, [data-theme="minimal"] .poster-frame::after { display: none; }
+[data-theme="minimal"] * { text-shadow: none !important; box-shadow: none !important; }
+[data-theme="minimal"] .lamp-bulb { box-shadow: none; }
+[data-theme="minimal"] .sticky { box-shadow: none; border: 1px solid #111; }
+
+/* CRT — глобальные сканлайны */
+[data-theme="crt"] #room::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 999;
+  background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(0,0,0,.2) 2px, rgba(0,0,0,.2) 3px);
+  mix-blend-mode: multiply;
+}
+[data-theme="crt"] body { text-shadow: 0 0 2px var(--t-accent-glow); }
+</style>
+</head>
+<body>
+<div id="room">
+  <div class="wall"></div>
+  <div class="window"></div>
+  <div class="shelf"></div>
+  <div class="shelf-books"><div class="book"></div><div class="book"></div><div class="book"></div><div class="book"></div></div>
+  <div class="poster-frame"></div>
+  <div class="ceiling-lamp"><div class="lamp-cord"></div><div class="lamp-shade"></div><div class="lamp-bulb"></div></div>
+  <div class="desk"></div>
+  <div class="mug"></div>
+  <div class="radio">
+    <div class="radio-display"><span class="radio-led"></span><span class="radio-name">— OFF —</span></div>
+    <div class="radio-controls">
+      <button class="radio-btn" data-action="radio-prev">◀◀</button>
+      <button class="radio-btn" data-action="radio-toggle">▶ / ⏸</button>
+      <button class="radio-btn" data-action="radio-next">▶▶</button>
+    </div>
+    <div class="radio-vol-row"><span>VOL</span><input type="range" class="radio-vol" min="0" max="1" step="0.05"></div>
+  </div>
+  <div id="sticky-notes"></div>
+
+  <div class="hud hud-tl">
+    <span class="hud-block" id="weatherChip">⛅ —</span>
+    <span class="hud-block" id="cryptoChip">₿ —</span>
+  </div>
+  <div class="hud hud-tr">
+    <button class="hud-btn" data-action="theme-cycle" title="Alt+T">🎨 THEME</button>
+    <button class="hud-btn" data-action="settings" title="Alt+S">⚙ CONFIG</button>
+    <button class="hud-btn" data-action="export">⬇ EXPORT</button>
+    <button class="hud-btn" data-action="import">⬆ IMPORT</button>
+  </div>
+  <div class="hud hud-br">
+    <button class="hud-btn" data-action="add-note">＋ NOTE</button>
+  </div>
+
+  <div id="app">
+    <div id="chat-handle" title="Потяни вверх, чтобы расширить"></div>
+    <div id="chat"></div>
+    <div id="input-bar">
+      <input id="q" placeholder="Спроси что-нибудь — погода, крипта, таблица, поиск, чат…" autocomplete="off">
+      <button id="send" class="hud-btn">→</button>
+    </div>
+  </div>
+
+  <div id="modal-overlay" class="hidden"><div class="modal" id="modal-content"></div></div>
+  <input type="file" id="import-file" accept="application/json" hidden>
+  <div id="tooltip" class="hidden"></div>
+</div>
+<script>
+/* ===== STORAGE ===== */
+const NS = 'nostalgia.';
+const H_ = 'https:' + '//';
+const Storage = {
+  get(k, def) { try { const v = localStorage.getItem(NS+k); return v === null ? def : JSON.parse(v); } catch(e) { return def; } },
+  set(k, v) { localStorage.setItem(NS+k, JSON.stringify(v)); },
+  del(k) { localStorage.removeItem(NS+k); },
+  exportAll() { const o = {}; for (let i=0;i<localStorage.length;i++) { const k = localStorage.key(i); if (k && k.startsWith(NS)) try { o[k.slice(NS.length)] = JSON.parse(localStorage.getItem(k)); } catch(e){} } return o; },
+  importAll(o) { for (const [k,v] of Object.entries(o)) localStorage.setItem(NS+k, JSON.stringify(v)); }
+};
+
+/* ===== SETTINGS ===== */
+const DEFAULT_RADIOS = [
+  { name: 'I Love Radio 17', url: H_ + 'stream17.iloveradio.de/iloveradio17.mp3' },
+  { name: 'I Love Radio 8',  url: H_ + 'streams.ilovemusic.de/iloveradio8.mp3' },
+  { name: 'I Love Radio 7',  url: H_ + 'streams.ilovemusic.de/iloveradio7.mp3' },
+  { name: 'I Love Radio 2',  url: H_ + 'streams.ilovemusic.de/iloveradio2.mp3' },
+];
+const Settings = {
+  get model() { return Storage.get('model', 'llama-3.3-70b-versatile'); },
+  set model(v) { Storage.set('model', v); },
+  get theme() { return Storage.get('theme', 'cozy'); },
+  set theme(v) { Storage.set('theme', v); },
+  get radios() { return Storage.get('radios', DEFAULT_RADIOS); },
+  set radios(v) { Storage.set('radios', v); },
+  get city() { return Storage.get('city', { name: 'Москва', lat: 55.75, lon: 37.62 }); },
+  set city(v) { Storage.set('city', v); },
+  get radioVol() { return Storage.get('radioVol', 0.6); },
+  set radioVol(v) { Storage.set('radioVol', v); },
+};
+
+/* ===== MODELS ===== */
+const MODELS = [
+  { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B', desc: 'Универсальная, лучшая по качеству' },
+  { id: 'llama-3.1-8b-instant',    name: 'Llama 3.1 8B', desc: 'Быстрая, для коротких ответов' },
+  { id: 'gemma2-9b-it',            name: 'Gemma 2 9B',   desc: 'Google, лёгкая' },
+  { id: 'moonshotai/kimi-k2-instruct', name: 'Kimi K2', desc: 'Длинный контекст' },
+  { id: 'qwen/qwen3-32b',          name: 'Qwen 3 32B',   desc: 'Сильная альтернатива' },
+  { id: 'groq/compound',           name: 'Compound (web)', desc: 'С веб-поиском' },
+];
+
+/* ===== THEMES (только метаданные, переменные в CSS) ===== */
+const THEMES = {
+  cozy:      { name: 'Cozy Room',     icon: '🪵', family: 'retro',  desc: 'Тёплое дерево, латунь',  preview: 'linear-gradient(180deg,#3d2b1a,#1e1610)', accent: '#e8b84a' },
+  crt:       { name: 'CRT Terminal',  icon: '📺', family: 'retro',  desc: 'Фосфорный зелёный',     preview: 'radial-gradient(#001a08,#000400)',         accent: '#33ff66' },
+  synthwave: { name: 'Synthwave 80s', icon: '🌆', family: 'retro',  desc: 'Розовый неон',           preview: 'linear-gradient(180deg,#1a0533,#ff006e)', accent: '#ff71ce' },
+  cyberpunk: { name: 'Cyberpunk',     icon: '🔮', family: 'hitech', desc: 'Бирюза + маджента',     preview: 'linear-gradient(135deg,#03050a,#0a0f1f)', accent: '#00f0ff' },
+  glass:     { name: 'Glass',         icon: '🧊', family: 'hitech', desc: 'Размытое стекло',       preview: 'linear-gradient(135deg,#dbe7f5,#f5dde3)', accent: '#4a7eff' },
+  minimal:   { name: 'Swiss Minimal', icon: '⚪', family: 'hitech', desc: 'Чёрный на белом',        preview: '#fafafa',                                  accent: '#dc2626' },
+};
+const THEME_ORDER = ['cozy','crt','synthwave','cyberpunk','glass','minimal'];
+const Theme = {
+  current: 'cozy',
+  apply(id) {
+    if (!THEMES[id]) id = 'cozy';
+    document.documentElement.dataset.theme = id;
+    document.documentElement.dataset.themeFamily = THEMES[id].family;
+    this.current = id;
+    Settings.theme = id;
+  },
+  cycle() {
+    const i = THEME_ORDER.indexOf(this.current);
+    this.apply(THEME_ORDER[(i+1) % THEME_ORDER.length]);
+    return THEMES[this.current];
+  }
+};
+
+/* ===== UTILS ===== */
+function esc(s) { return s == null ? '' : String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showTooltip(text, ms) {
+  const t = document.getElementById('tooltip');
+  t.textContent = text;
+  t.classList.remove('hidden');
+  clearTimeout(showTooltip._t);
+  showTooltip._t = setTimeout(() => t.classList.add('hidden'), ms || 1300);
+}
+
+/* ===== RADIO ===== */
+const Radio = {
+  audio: null,
+  current: -1,
+  playing: false,
+  init() {
+    this.audio = new Audio();
+    this.audio.crossOrigin = 'anonymous';
+    this.audio.volume = Settings.radioVol;
+    const v = document.querySelector('.radio-vol');
+    v.value = this.audio.volume;
+    v.addEventListener('input', e => { this.audio.volume = parseFloat(e.target.value); Settings.radioVol = this.audio.volume; });
+    this.audio.addEventListener('error', () => { this.playing = false; this.updateUI('ошибка'); });
+    this.updateUI();
+  },
+  toggle() {
+    if (this.playing) { this.audio.pause(); this.playing = false; this.updateUI(); return; }
+    if (this.current < 0) this.current = 0;
+    this.play(this.current);
+  },
+  play(i) {
+    const list = Settings.radios; if (!list.length) return;
+    this.current = ((i % list.length) + list.length) % list.length;
+    this.audio.src = list[this.current].url;
+    this.audio.play().then(()=>{ this.playing = true; this.updateUI(); }).catch(e => { console.warn(e); this.playing = false; this.updateUI('ошибка'); });
+  },
+  next() { this.play(this.current + 1); },
+  prev() { this.play(this.current - 1); },
+  updateUI(forceText) {
+    const r = document.querySelector('.radio'); if (!r) return;
+    const list = Settings.radios;
+    const name = forceText || (this.current >= 0 && list[this.current] ? list[this.current].name : '— OFF —');
+    r.querySelector('.radio-name').textContent = (this.playing ? '▶ ' : (this.current >= 0 ? '⏸ ' : '○ ')) + name;
+    r.querySelector('.radio-led').classList.toggle('on', this.playing);
+  }
+};
+
+/* ===== NOTES (заметки на стене) ===== */
+const Notes = {
+  list() { return Storage.get('notes', []); },
+  save(arr) { Storage.set('notes', arr); },
+  add(text) {
+    const all = this.list();
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+    const colors = ['#fff8a8','#ffc7c7','#c7e9c7','#c7d7ff','#f5d8b3'];
+    all.push({ id, text: text || '', done: false, x: 120 + Math.random()*260, y: 80 + Math.random()*140, color: colors[Math.floor(Math.random()*colors.length)] });
+    this.save(all); this.render();
+  },
+  remove(id) { this.save(this.list().filter(n => n.id !== id)); this.render(); },
+  update(id, patch) {
+    const all = this.list(); const i = all.findIndex(n => n.id === id);
+    if (i < 0) return; Object.assign(all[i], patch); this.save(all);
+  },
+  render() {
+    const c = document.getElementById('sticky-notes'); if (!c) return;
+    c.innerHTML = this.list().map(n => `
+      <div class="sticky ${n.done?'done':''}" data-id="${n.id}" style="left:${n.x}px;top:${n.y}px;background:${esc(n.color)}">
+        <button class="sticky-close" data-action="note-remove" data-id="${n.id}">×</button>
+        <label class="sticky-check"><input type="checkbox" data-action="note-toggle" data-id="${n.id}" ${n.done?'checked':''}></label>
+        <textarea class="sticky-text" data-id="${n.id}" placeholder="…">${esc(n.text)}</textarea>
+      </div>
+    `).join('');
+    c.querySelectorAll('.sticky').forEach(el => this.bindDrag(el));
+    c.querySelectorAll('.sticky-text').forEach(t => {
+      t.addEventListener('input', e => this.update(e.target.dataset.id, { text: e.target.value }));
+    });
+  },
+  bindDrag(el) {
+    let drag = null;
+    el.addEventListener('mousedown', e => {
+      if (e.target.closest('.sticky-close, .sticky-check, .sticky-text')) return;
+      const r = el.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+      e.preventDefault();
+    });
+    const move = e => {
+      if (!drag) return;
+      el.style.left = (e.clientX - drag.dx) + 'px';
+      el.style.top = (e.clientY - drag.dy) + 'px';
+    };
+    const up = () => {
+      if (!drag) return;
+      this.update(el.dataset.id, { x: parseFloat(el.style.left), y: parseFloat(el.style.top) });
+      drag = null;
+    };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  }
+};
+
+/* ===== LIVE DATA (бесплатные API) ===== */
+const Live = {
+  async weather() {
+    try {
+      const c = Settings.city;
+      const url = H_ + 'api.open-meteo.com/v1/forecast?latitude=' + c.lat + '&longitude=' + c.lon + '&current=temperature_2m,weather_code&timezone=auto';
+      const r = await fetch(url); const d = await r.json();
+      const t = Math.round(d.current.temperature_2m);
+      const code = d.current.weather_code;
+      const icon = code === 0 ? '☀️' : code < 3 ? '⛅' : code < 50 ? '☁️' : code < 70 ? '🌧' : code < 80 ? '🌨' : '⛈';
+      document.getElementById('weatherChip').textContent = icon + ' ' + t + '° ' + c.name;
+    } catch(e) { console.warn('weather', e); }
+  },
+  async crypto() {
+    try {
+      const url = H_ + 'api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd';
+      const r = await fetch(url); const d = await r.json();
+      const btc = d.bitcoin && d.bitcoin.usd;
+      if (btc) document.getElementById('cryptoChip').textContent = '₿ $' + Math.round(btc).toLocaleString('en-US');
+    } catch(e) { console.warn('crypto', e); }
+  },
+  init() { this.weather(); this.crypto(); setInterval(()=>{ this.weather(); this.crypto(); }, 5*60*1000); }
+};
+
+/* ===== GROQ API ===== */
+async function groqChat(messages, opts) {
+  opts = opts || {};
+  const ctrl = new AbortController();
+  const timeout = setTimeout(()=>ctrl.abort(), 30000);
+  try {
+    const r = await fetch('/api/groq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: opts.model || Settings.model,
+        messages,
+        temperature: opts.temperature == null ? 0.6 : opts.temperature,
+        max_tokens: opts.max_tokens || 2048,
+      }),
+      signal: ctrl.signal,
+    });
+    if (!r.ok) { const t = await r.text(); throw new Error('Groq ' + r.status + ': ' + t.slice(0,200)); }
+    const d = await r.json();
+    return d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content || '';
+  } finally { clearTimeout(timeout); }
+}
+
+/* ===== INTENT ===== */
+const INTENTS = ['chat','search','weather','crypto','table','analysis'];
+async function detectIntent(q) {
+  try {
+    const out = await groqChat([
+      { role: 'system', content: 'Классификатор. Верни ОДНО слово из: chat, search, weather, crypto, table, analysis. Никаких пояснений.' },
+      { role: 'user', content: q }
+    ], { model: 'llama-3.1-8b-instant', temperature: 0, max_tokens: 8 });
+    const v = (out || '').trim().toLowerCase().split(/[\s,.\n]+/)[0];
+    return INTENTS.includes(v) ? v : 'chat';
+  } catch(e) { console.warn('intent', e); return 'chat'; }
+}
+
+/* ===== RENDER ANSWER ===== */
+function renderMd(text) {
+  if (window.marked) {
+    window.marked.setOptions({ breaks: true, gfm: true });
+    return window.marked.parse(text);
+  }
+  return '<pre>' + esc(text) + '</pre>';
+}
+
+/* ===== CHAT UI ===== */
+function appendChat(role, html, pending) {
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = 'msg msg-' + role + (pending ? ' pending' : '');
+  div.innerHTML = html;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return div;
+}
+
+async function ask(q) {
+  if (!q.trim()) return;
+  appendChat('user', '<span class="q-text">' + esc(q) + '</span>');
+  const pending = appendChat('ai', '<em>думаю…</em>', true);
+  try {
+    const intent = await detectIntent(q);
+    let sys, model = Settings.model;
+    if (intent === 'search') {
+      sys = 'Ты ассистент с веб-поиском. Найди актуальную информацию в интернете и ответь по-русски, со ссылками если уместно.';
+      model = 'groq/compound';
+    } else if (intent === 'table') {
+      sys = 'Ты ассистент, который ВСЕГДА оформляет данные как GitHub-flavored Markdown таблицу. Колонки разделяй |, заголовок отделяй ---. Кратко.';
+    } else if (intent === 'analysis') {
+      sys = 'Ты аналитик. Разложи ответ по заголовкам и буллетам, делай выводы. Используй Markdown.';
+    } else if (intent === 'weather' || intent === 'crypto') {
+      sys = 'Ты ассистент. Ответь кратко и по делу. Markdown допустим.';
+    } else {
+      sys = 'Ты дружелюбный AI в ретро-комнате. Отвечай по-русски, естественно. Используй Markdown.';
+    }
+    const reply = await groqChat([
+      { role: 'system', content: sys },
+      { role: 'user', content: q }
+    ], { model });
+    pending.classList.remove('pending');
+    pending.innerHTML = '<span class="intent-badge">' + intent + '</span>' + renderMd(reply);
+    document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+  } catch(e) {
+    pending.classList.remove('pending');
+    pending.innerHTML = '<strong>Ошибка:</strong> ' + esc(e.message);
+  }
+}
+
+/* ===== MODAL ===== */
+function openModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
+
+function settingsHtml() {
+  const m = Settings.model, t = Settings.theme;
+  const modelCards = MODELS.map(x => '<div class="card '+(x.id===m?'sel':'')+'" data-mid="'+esc(x.id)+'"><div class="card-name">'+esc(x.name)+'</div><div class="card-desc">'+esc(x.desc)+'</div></div>').join('');
+  const themeCards = THEME_ORDER.map(id => {
+    const th = THEMES[id], sel = id === t ? 'sel' : '';
+    return '<div class="tcard '+sel+'" data-tid="'+esc(id)+'" style="background:'+esc(th.preview)+'"><span class="tcard-dot" style="background:'+esc(th.accent)+';color:'+esc(th.accent)+'"></span><span class="tcard-name">'+th.icon+' '+esc(th.name)+'</span></div>';
+  }).join('');
+  const radios = Settings.radios.map(r => r.name + ' | ' + r.url).join('\n');
+  const c = Settings.city;
+  return '<h2 class="m-title">⚙ Настройки</h2>'
+    + '<div class="m-section"><div class="m-label">Модель AI</div><div class="cards">' + modelCards + '</div></div>'
+    + '<div class="m-section"><div class="m-label">Тема оформления</div><div class="tgrid">' + themeCards + '</div></div>'
+    + '<div class="m-section"><div class="m-label">Радио-станции (Название | URL, по одной на строку)</div><textarea id="set-radios" class="m-textarea" rows="5">' + esc(radios) + '</textarea></div>'
+    + '<div class="m-section"><div class="m-label">Город (для погоды): название | широта | долгота</div><input id="set-city" class="m-input" value="' + esc(c.name + ' | ' + c.lat + ' | ' + c.lon) + '"></div>'
+    + '<div class="m-actions"><button class="m-btn m-btn-secondary" data-action="modal-cancel">Отмена</button><button class="m-btn" data-action="modal-save">Сохранить</button></div>';
+}
+
+function saveSettings() {
+  const o = document.getElementById('modal-overlay');
+  const sM = o.querySelector('.card.sel'); if (sM) Settings.model = sM.dataset.mid;
+  const sT = o.querySelector('.tcard.sel'); if (sT) Theme.apply(sT.dataset.tid);
+  const radiosText = o.querySelector('#set-radios').value;
+  const parsed = radiosText.split('\n').map(line => { const [n,u] = line.split('|').map(s => s && s.trim()); return (n && u) ? { name: n, url: u } : null; }).filter(Boolean);
+  if (parsed.length) Settings.radios = parsed;
+  const cityText = o.querySelector('#set-city').value;
+  const cp = cityText.split('|').map(s => s.trim());
+  if (cp.length === 3 && !isNaN(parseFloat(cp[1])) && !isNaN(parseFloat(cp[2]))) {
+    Settings.city = { name: cp[0], lat: parseFloat(cp[1]), lon: parseFloat(cp[2]) };
+    Live.weather();
+  }
+  closeModal();
+  Radio.updateUI();
+}
+
+/* ===== EXPORT / IMPORT ===== */
+function exportAll() {
+  const data = Storage.exportAll();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'nostalgia-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+}
+function importFile(file) {
+  const fr = new FileReader();
+  fr.onload = () => {
+    try { Storage.importAll(JSON.parse(fr.result)); location.reload(); }
+    catch(e) { alert('Битый JSON: ' + e.message); }
+  };
+  fr.readAsText(file);
+}
+
+/* ===== CHAT RESIZE ===== */
+function initResize() {
+  const handle = document.getElementById('chat-handle');
+  const chat = document.getElementById('chat');
+  let drag = null;
+  handle.addEventListener('mousedown', e => { drag = { y: e.clientY, h: chat.offsetHeight }; document.body.style.cursor = 'ns-resize'; e.preventDefault(); });
+  document.addEventListener('mousemove', e => {
+    if (!drag) return;
+    const dy = drag.y - e.clientY;
+    chat.style.height = Math.max(120, Math.min(window.innerHeight*0.8, drag.h + dy)) + 'px';
+  });
+  document.addEventListener('mouseup', () => { if (drag) { document.body.style.cursor = ''; drag = null; } });
+}
+
+/* ===== BOOT ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  Theme.apply(Settings.theme);
+  Radio.init();
+  Live.init();
+  Notes.render();
+  initResize();
+
+  document.getElementById('send').onclick = () => {
+    const q = document.getElementById('q').value;
+    document.getElementById('q').value = '';
+    ask(q);
+  };
+  document.getElementById('q').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('send').click(); }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.altKey && e.key.toLowerCase() === 't') { e.preventDefault(); const t = Theme.cycle(); showTooltip(t.icon + ' ' + t.name); }
+    if (e.altKey && e.key.toLowerCase() === 's') { e.preventDefault(); openModal(settingsHtml()); }
+    if (e.key === 'Escape') closeModal();
+  });
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-action]');
+    if (a) {
+      const act = a.dataset.action;
+      if (act === 'theme-cycle') { const t = Theme.cycle(); showTooltip(t.icon + ' ' + t.name); }
+      else if (act === 'settings') openModal(settingsHtml());
+      else if (act === 'export') exportAll();
+      else if (act === 'import') document.getElementById('import-file').click();
+      else if (act === 'add-note') Notes.add('');
+      else if (act === 'note-remove') Notes.remove(a.dataset.id);
+      else if (act === 'note-toggle') Notes.update(a.dataset.id, { done: a.checked });
+      else if (act === 'radio-prev') Radio.prev();
+      else if (act === 'radio-toggle') Radio.toggle();
+      else if (act === 'radio-next') Radio.next();
+      else if (act === 'modal-cancel') closeModal();
+      else if (act === 'modal-save') saveSettings();
+    }
+    const c = e.target.closest('.card');
+    if (c) { c.parentElement.querySelectorAll('.card').forEach(x => x.classList.remove('sel')); c.classList.add('sel'); }
+    const tc = e.target.closest('.tcard');
+    if (tc) { tc.parentElement.querySelectorAll('.tcard').forEach(x => x.classList.remove('sel')); tc.classList.add('sel'); Theme.apply(tc.dataset.tid); }
+  });
+
+  document.getElementById('import-file').addEventListener('change', e => {
+    const f = e.target.files[0]; if (f) importFile(f);
+  });
+
+  appendChat('ai', '<strong>Привет!</strong> Я NostalgiaOS. Спроси что угодно: погода, крипта, таблица, веб-поиск или просто поболтаем 🌿');
+});
+</script>
+</body>
+</html>
